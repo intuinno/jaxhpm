@@ -1,0 +1,98 @@
+defaults: 
+  # MODEL
+  device: 'cuda:0'
+  exp_name: 'exp-name'
+  levels: 3
+  tmp_abs_factor: 4
+  model_dir_prefix: null
+  enc_dense_layers: 3
+  enc_dense_hidden_size: 1000
+  cell_type: RSSMCell
+  dyn_stoch_size: 32
+  dyn_deter_size: 512
+  dyn_hidden_size: 512
+  enc_emb_size: 200
+  dyn_min_stddev: 0.0001
+  dyn_mean_only: False
+  dyn_reset_state: False
+  use_obs: True
+  channels_mult: 1
+  precision: 32
+  act: "SiLU"
+  decoder_act: "SiLU"
+  dyn_input_layers: 1
+  dyn_output_layers: 1
+  dyn_rec_depth: 1
+  dyn_shared: False
+  dyn_discrete: 32
+  dyn_mean_act: 'none'
+  dyn_std_act: 'softplus'
+  dyn_temp_post:  True 
+  kl_free: 1.0
+  kl_dyn_scale: 0.5
+  kl_rep_scale: 0.1
+  kl_forward: False 
+  unimix_ratio: 0.01
+  initial: 'learned' 
+  img_size: [64, 64]
+  dec_stddev: 1.0
+  seed: 42
+
+  # DATASET
+  dataset: mmnist
+  seq_len: 256
+  eval_seq_len: 1000
+  channels: 1
+  cnn_depth: 32
+  encoder_kernels: [4, 4, 4, 4]
+  decoder_kernels: [5, 5, 6, 6]
+  decoder_thin: True
+  datadir: data
+
+  # TRAINING
+  lr: 0.0003
+  batch_size: 128
+  num_epochs: 300
+  kl_grad_post_perc: null
+  free_nats: null
+  beta: null
+  clip_grad_norm_by: 100
+  eps: 1e-4
+  weight_decay: 0.0
+  optimizer: "adam"
+  debug: False 
+
+
+
+  # SUMMARIES
+  logdir: logs
+  open_loop_ctx: 2
+  num_val_batches: 1
+  save_gifs: True
+  save_scalars_every: 1
+  save_model_every: 1
+  backup_model_every: 100
+  eval_every: 20
+  train_gif_every: 20
+
+
+
+exp-051-1level:
+  # MODEL
+  device: 'cuda:1'
+  exp_name: 'exp-051-1level-rev2'
+  levels: 1
+
+exp-051-2level:
+  # MODEL
+  device: 'cuda:1'
+  exp_name: 'exp-051-2level-rev2'
+  levels: 2
+
+exp-051-3level:
+  # MODEL
+  device: 'cuda:0'
+  exp_name: 'exp-051-3level-rev2'
+  levels: 3
+
+
