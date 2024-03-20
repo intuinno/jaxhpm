@@ -15,6 +15,9 @@ from l2hwm import L2HWM
 from datetime import datetime
 import pytz
 from prettytable import PrettyTable
+import jax
+
+torch.cuda.set_per_process_memory_fraction(0.8)
 
 
 def count_parameters(model):
@@ -66,11 +69,7 @@ if __name__ == "__main__":
         yaml.dump(configs, f, default_flow_style=False)
 
     # Load dataset.
-    train_dataset, val_dataset = load_dataset(configs)
-    train_dataloader = DataLoader(
-        train_dataset, batch_size=configs.batch_size, shuffle=True
-    )
-    val_dataloader = DataLoader(val_dataset, batch_size=8, shuffle=True)
+    train_dataloader, val_dataloader = load_dataset(configs)
 
     # Build model
     model = L2HWM(configs).to(configs.device)
@@ -88,6 +87,9 @@ if __name__ == "__main__":
     logger = tools.Logger(exp_logdir, 0)
     metrics = {}
 
+    num_val_enumerate = configs.val_num_mmnist_seq // 8
+    num_train_enumerate = configs.train_num_mmnist_seq // configs.batch_size
+
     for epoch in range(configs.num_epochs):
         # Write evaluation summary
         print(f"======== Epoch {epoch} / {configs.num_epochs} ==========")
@@ -96,10 +98,12 @@ if __name__ == "__main__":
         print("Current Time =", current_time)
 
         logger.step = epoch
+
         if epoch % configs.eval_every == 0:
             print(f"Evaluating ... ")
             recon_loss_list = []
-            for i, x in enumerate(tqdm(val_dataloader)):
+            for i, _ in enumerate(tqdm(range(num_val_enumerate))):
+                x = next(val_dataloader)
                 openl, recon_loss = model.video_pred(x.to(configs.device))
                 if i == 0:
                     logger.video("eval_openl", openl)
@@ -107,15 +111,17 @@ if __name__ == "__main__":
             recon_loss_mean = np.mean(recon_loss_list)
             logger.scalar("eval_video_nll", recon_loss_mean)
 
-        print(f"Training ...")
-        for i, x in enumerate(tqdm(train_dataloader)):
-            x = x.to(configs.device)
-            met = model.local_train(x)
-            for name, values in met.items():
-                if not name in metrics.keys():
-                    metrics[name] = [values]
-                else:
-                    metrics[name].append(values)
+        with jax.profiler.trace("./logs"):
+            print(f"Training ...")
+            for i, _ in enumerate(tqdm(range(num_train_enumerate))):
+                x = next(train_dataloader)
+                x = x.to(configs.device)
+                met = model.local_train(x)
+                for name, values in met.items():
+                    if not name in metrics.keys():
+                        metrics[name] = [values]
+                    else:
+                        metrics[name].append(values)
 
         # Write training summary
         for name, values in metrics.items():

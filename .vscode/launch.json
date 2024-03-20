@@ -1,0 +1,182 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "jax_mmnist",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "defaults",  "jax-001",
+            ],
+            "env": {
+                "XLA_PYTHON_CLIENT_MEM_FRACTION": ".30",
+            }
+            // "environment": [
+            //     {"name": "XLA_PYTHON_CLIENT_MEM_FRACTION", "value": ".10"}
+            // ],
+        },
+        {
+            "name": "mmnist-discrete",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "defaults",  "mmnist_debug2",
+                "--exp_name", "3level"
+            ]
+        },
+        {
+            "name": "local mmnist",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "defaults",  "local_discrete",
+                "--exp_name", "debug",
+                "--levels", "3",
+                "--device", "cpu",
+                // "--load_model", "logs/mmnist/3level-discrete_20230412_161938/latest_model.pt"
+            ]
+        },
+        {
+            "name": "pretrain",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "defaults",  "pretrain",
+                "--exp_name", "debug",
+                // "--levels", "3",
+                // "--device", "cpu",
+                "--device", "cuda:2",
+                "--debug", "True",
+                // "--load_model", "logs/mmnist/merge-01_20230505_154630/latest_checkpoint.pt"
+            ]
+        },
+        {
+            "name": "exp-044",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "exp-044",
+                "--exp_name", "exp-044-debug",
+                // "--levels", "3",
+                "--device", "cpu",
+                // "--device", "cuda:2",
+                "--debug", "True",
+                // "--load_model", "logs/mmnist/merge-01_20230505_154630/latest_checkpoint.pt"
+            ]
+        },
+        {
+            "name": "exp-050",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "defaults", "exp-050-floor"
+                "--exp_name", "exp-050-debug",
+                // "--levels", "3",
+                "--device", "cpu",
+                // "--device", "cuda:2",
+                "--debug", "True",
+                // "--load_model", "logs/mmnist/merge-01_20230505_154630/latest_checkpoint.pt"
+            ]
+        },
+        {
+            "name": "merge42",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "defaults",  "pre_ae_bn",
+                "--exp_name", "merge42",
+                // "--levels", "3",
+                "--device", "cpu",
+                // "--device", "cuda:2",
+                "--debug", "True",
+                // "--load_model", "logs/mmnist/merge-42_20230822_221101/latest_checkpoint.pt"
+            ]
+        },
+        {
+            "name": "merge42",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "defaults",  "pre_ae_bn",
+                "--exp_name", "merge42",
+                // "--levels", "3",
+                "--device", "cpu",
+                // "--device", "cuda:2",
+                "--debug", "True",
+                // "--load_model", "logs/mmnist/merge-42_20230822_221101/latest_checkpoint.pt"
+            ]
+        },
+        {
+            "name": "eval mmnist",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/eval.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                //"--model", "/home/intuinno/codegit/cwvae-torch/logs/mmnist/exp044_20230831_150212/latest_checkpoint.pt",
+                "--model", "/home/intuinno/codegit/l2hpm/logs/mmnist/exp-048-3level_20240226_155006/latest_checkpoint.pt",
+                "--top-ctx", "4",  
+            ]
+        },
+        {
+            "name": "mineRL-local",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [ 
+                "--configs", "defaults",  "mineRL_local",
+                "--device", "cpu",
+            ]
+        },
+        {
+            "name": "maze-local",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [ 
+                "--configs", "defaults",  "maze_local",
+                "--device", "cpu",
+            ]
+        }
+    ]
+}
