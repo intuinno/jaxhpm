@@ -1,5 +1,6 @@
 temp/
 logs/
+*.png
 *.prof
 
 # Byte-compiled / optimized / DLL files
