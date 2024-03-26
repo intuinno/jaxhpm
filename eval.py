@@ -3,7 +3,7 @@ import torch
 import pathlib
 import pickle
 
-from cwvae import CWVAE
+# from cwvae import CWVAE
 from l2hwm import L2HWM
 from data_loader import *
 from datetime import datetime
@@ -112,7 +112,7 @@ if __name__ == "__main__":
         preds = model.pred(gts.to(configs.device), args.top_ctx)
         preds = preds[0].detach().cpu().numpy()
         # gts = gts / 255.0
-        gts = gts.numpy()
+        gts = gts.cpu().numpy()
 
         # Computing metrics.
         ssim, psnr = tools.compute_metrics(gts, preds)

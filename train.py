@@ -1,7 +1,6 @@
 import numpy as np
 import argparse
 import ruamel.yaml as yaml
-import torch
 import pathlib
 import sys
 from tqdm import tqdm
@@ -16,8 +15,6 @@ from datetime import datetime
 import pytz
 from prettytable import PrettyTable
 import jax
-
-torch.cuda.set_per_process_memory_fraction(0.8)
 
 
 def count_parameters(model):
