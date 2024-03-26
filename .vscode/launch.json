@@ -30,118 +30,6 @@
             // ],
         },
         {
-            "name": "mmnist-discrete",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [
-                "--configs", "defaults",  "mmnist_debug2",
-                "--exp_name", "3level"
-            ]
-        },
-        {
-            "name": "local mmnist",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [
-                "--configs", "defaults",  "local_discrete",
-                "--exp_name", "debug",
-                "--levels", "3",
-                "--device", "cpu",
-                // "--load_model", "logs/mmnist/3level-discrete_20230412_161938/latest_model.pt"
-            ]
-        },
-        {
-            "name": "pretrain",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [
-                "--configs", "defaults",  "pretrain",
-                "--exp_name", "debug",
-                // "--levels", "3",
-                // "--device", "cpu",
-                "--device", "cuda:2",
-                "--debug", "True",
-                // "--load_model", "logs/mmnist/merge-01_20230505_154630/latest_checkpoint.pt"
-            ]
-        },
-        {
-            "name": "exp-044",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [
-                "--configs", "exp-044",
-                "--exp_name", "exp-044-debug",
-                // "--levels", "3",
-                "--device", "cpu",
-                // "--device", "cuda:2",
-                "--debug", "True",
-                // "--load_model", "logs/mmnist/merge-01_20230505_154630/latest_checkpoint.pt"
-            ]
-        },
-        {
-            "name": "exp-050",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [
-                "--configs", "defaults", "exp-050-floor"
-                "--exp_name", "exp-050-debug",
-                // "--levels", "3",
-                "--device", "cpu",
-                // "--device", "cuda:2",
-                "--debug", "True",
-                // "--load_model", "logs/mmnist/merge-01_20230505_154630/latest_checkpoint.pt"
-            ]
-        },
-        {
-            "name": "merge42",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [
-                "--configs", "defaults",  "pre_ae_bn",
-                "--exp_name", "merge42",
-                // "--levels", "3",
-                "--device", "cpu",
-                // "--device", "cuda:2",
-                "--debug", "True",
-                // "--load_model", "logs/mmnist/merge-42_20230822_221101/latest_checkpoint.pt"
-            ]
-        },
-        {
-            "name": "merge42",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [
-                "--configs", "defaults",  "pre_ae_bn",
-                "--exp_name", "merge42",
-                // "--levels", "3",
-                "--device", "cpu",
-                // "--device", "cuda:2",
-                "--debug", "True",
-                // "--load_model", "logs/mmnist/merge-42_20230822_221101/latest_checkpoint.pt"
-            ]
-        },
-        {
             "name": "eval mmnist",
             "type": "python", 
             "request": "launch", 
@@ -150,7 +38,7 @@
             "justMyCode": true, 
             "args": [
                 //"--model", "/home/intuinno/codegit/cwvae-torch/logs/mmnist/exp044_20230831_150212/latest_checkpoint.pt",
-                "--model", "/home/intuinno/codegit/l2hpm/logs/mmnist/exp-048-3level_20240226_155006/latest_checkpoint.pt",
+                "--model", "/home/intuinno/codegit/jaxhpm/",
                 "--top-ctx", "4",  
             ]
         },
