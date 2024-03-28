@@ -38,33 +38,16 @@
             "justMyCode": true, 
             "args": [
                 //"--model", "/home/intuinno/codegit/cwvae-torch/logs/mmnist/exp044_20230831_150212/latest_checkpoint.pt",
-                "--model", "/home/intuinno/codegit/jaxhpm/",
+                "--model", "/home/intuinno/codegit/jaxhpm/logs/jax_mmnist/jax-001_20240320_175512/latest_checkpoint.pt",
                 "--top-ctx", "4",  
-            ]
+                "--batch-size", "10", 
+                "--num-examples", "30",
+                "--exp-name", "debug",
+                "--no-save-grid",
+            ],
+            "env": {
+                "XLA_PYTHON_CLIENT_ALLOCATOR": "platform",
+            },
         },
-        {
-            "name": "mineRL-local",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [ 
-                "--configs", "defaults",  "mineRL_local",
-                "--device", "cpu",
-            ]
-        },
-        {
-            "name": "maze-local",
-            "type": "python", 
-            "request": "launch", 
-            "program": "${workspaceFolder}/train.py",
-            "console": "integratedTerminal",
-            "justMyCode": true, 
-            "args": [ 
-                "--configs", "defaults",  "maze_local",
-                "--device", "cpu",
-            ]
-        }
     ]
 }

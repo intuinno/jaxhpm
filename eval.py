@@ -2,6 +2,7 @@ import argparse
 import torch
 import pathlib
 import pickle
+from tqdm import tqdm
 
 # from cwvae import CWVAE
 from l2hwm import L2HWM
@@ -11,6 +12,7 @@ import pytz
 import ruamel.yaml as yaml
 import tools
 import os
+from einops import rearrange
 
 yaml = yaml.YAML(typ="unsafe")
 if __name__ == "__main__":
@@ -43,6 +45,12 @@ if __name__ == "__main__":
         default=32,
         type=int,
         help="number of bottom-level context frames",
+    )
+    parser.add_argument(
+        "--batch-size",
+        default=3,
+        type=int,
+        help="batch size",
     )
     parser.add_argument(
         "--exp-name",
@@ -78,7 +86,7 @@ if __name__ == "__main__":
     eval_logdir.mkdir()
     print(f"Saving eval results at {eval_logdir}")
     configs = yaml.load((exp_rootdir / "config.yml").read_text())
-    configs.batch_size = 1
+    configs.eval_batch_size = args.batch_size
 
     if args.use_obs is not None:
         assert len(args.use_obs) == configs.levels
@@ -102,7 +110,8 @@ if __name__ == "__main__":
     # Evaluating.
     ssim_all = []
     psnr_all = []
-    for i_ex in range(args.num_examples):
+    num_epoch = args.num_examples // args.batch_size
+    for i_ex in tqdm(range(num_epoch)):
 
         x = next(data_iter)
         gts = torch.tile(
@@ -128,6 +137,9 @@ if __name__ == "__main__":
         # Setting aside the best metrics among all samples for plotting.
         ssim_all.append(np.expand_dims(ssim[order_ssim[-1]], 0))
         psnr_all.append(np.expand_dims(psnr[order_psnr[-1]], 0))
+
+        # ssim_all.append(ssim)
+        # psnr_all.append(psnr)
 
         # Storing gt for prediction and the context.
         path = os.path.join(eval_logdir, "sample" + str(i_ex) + "_gt/")

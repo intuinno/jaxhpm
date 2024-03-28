@@ -36,7 +36,7 @@ def load_dataset(cfg, **kwargs):
             batch_size=cfg.batch_size,
             device=device,
         )
-        test_data = JaxMMNIST(train=False, seq_len=1000, batch_size=8, device=device)
+        test_data = JaxMMNIST(train=False, seq_len=1000, batch_size=cfg.eval_batch_size, device=device)
         # test_data = train_data
     elif cfg.dataset == "mazes":
 
