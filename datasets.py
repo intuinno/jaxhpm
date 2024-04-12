@@ -474,7 +474,7 @@ def JaxMMNIST(
         images=jax_images, seq_len=seq_len, num_mnist_per_mmnist=num_mnist_per_image
     )
 
-    seed = 42
+    seed = 38
     new_key = jax.random.key(seed)
     batch_key = jax.random.split(new_key, num=batch_size)
 

@@ -25,6 +25,13 @@ if __name__ == "__main__":
         help="path to dir containing model and config.yml",
     )
     parser.add_argument(
+        "--device",
+        default="cpu",
+        type=str,
+        required=True,
+        help="device for running evaluation",
+    )
+    parser.add_argument(
         "--num-examples", default=100, type=int, help="number of examples to eval on"
     )
     parser.add_argument(
@@ -94,8 +101,10 @@ if __name__ == "__main__":
     else:
         configs.use_obs = True
 
-    _, val_dataloader = load_dataset(configs)
-    configs.device = "cuda" if torch.cuda.is_available() else "cpu"
+    train_dataset, val_dataset = load_dataset(configs)
+    # val_dataloader = DataLoader(val_dataset, batch_size=configs.eval_batch_size, shuffle=True)
+
+    configs.device = args.device
 
     model = L2HWM(configs).to(configs.device)
 
@@ -106,14 +115,16 @@ if __name__ == "__main__":
 
     model.eval()
 
-    data_iter = iter(val_dataloader)
     # Evaluating.
     ssim_all = []
     psnr_all = []
-    num_epoch = args.num_examples // args.batch_size
-    for i_ex in tqdm(range(num_epoch)):
+    ssim_best = []
+    psnr_best = []
+    num_epochs = args.num_examples // configs.eval_batch_size
+    for i_ex in tqdm(range(num_epochs)):
 
-        x = next(data_iter)
+        # x = next(val_dataset)
+        x = next(train_dataset)
         gts = torch.tile(
             x,
             [args.num_samples, 1, 1, 1, 1],
@@ -135,11 +146,12 @@ if __name__ == "__main__":
         order_psnr = np.argsort(np.mean(psnr, -1))
 
         # Setting aside the best metrics among all samples for plotting.
-        ssim_all.append(np.expand_dims(ssim[order_ssim[-1]], 0))
-        psnr_all.append(np.expand_dims(psnr[order_psnr[-1]], 0))
+        ssim_all.append(ssim)
+        psnr_all.append(psnr)
 
-        # ssim_all.append(ssim)
-        # psnr_all.append(psnr)
+        # Setting aside the best metrics among all samples for plotting.
+        ssim_best.append(np.expand_dims(ssim[order_ssim[-1]], 0))
+        psnr_best.append(np.expand_dims(psnr[order_psnr[-1]], 0))
 
         # Storing gt for prediction and the context.
         path = os.path.join(eval_logdir, "sample" + str(i_ex) + "_gt/")

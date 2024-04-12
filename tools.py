@@ -445,7 +445,7 @@ def compute_metrics(gt, pred):
 
 
 def plot_metrics(metrics, logdir, name):
-    # metrics = rearrange(metrics, "E B T -> (E B) T")
+    metrics = rearrange(metrics, "E B T -> (E B) T")
     mean_metric = np.squeeze(np.mean(metrics, 0))
     stddev_metric = np.squeeze(np.std(metrics, 0))
     np.savez(os.path.join(logdir, "{}_mean.npz".format(name)), mean_metric)

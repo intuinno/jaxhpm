@@ -84,7 +84,7 @@ if __name__ == "__main__":
     logger = tools.Logger(exp_logdir, 0)
     metrics = {}
 
-    num_val_enumerate = configs.val_num_mmnist_seq // 8
+    num_val_enumerate = configs.val_num_mmnist_seq // configs.eval_batch_size
     num_train_enumerate = configs.train_num_mmnist_seq // configs.batch_size
 
     for epoch in range(configs.num_epochs):
@@ -108,17 +108,17 @@ if __name__ == "__main__":
             recon_loss_mean = np.mean(recon_loss_list)
             logger.scalar("eval_video_nll", recon_loss_mean)
 
-        with jax.profiler.trace("./logs"):
-            print(f"Training ...")
-            for i, _ in enumerate(tqdm(range(num_train_enumerate))):
-                x = next(train_dataloader)
-                x = x.to(configs.device)
-                met = model.local_train(x)
-                for name, values in met.items():
-                    if not name in metrics.keys():
-                        metrics[name] = [values]
-                    else:
-                        metrics[name].append(values)
+        # with jax.profiler.trace("./logs"):
+        print(f"Training ...")
+        for i, _ in enumerate(tqdm(range(num_train_enumerate))):
+            x = next(train_dataloader)
+            x = x.to(configs.device)
+            met = model.local_train(x)
+            for name, values in met.items():
+                if not name in metrics.keys():
+                    metrics[name] = [values]
+                else:
+                    metrics[name].append(values)
 
         # Write training summary
         for name, values in metrics.items():

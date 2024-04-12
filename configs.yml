@@ -41,7 +41,7 @@ defaults:
   # DATASET
   dataset: mmnist
   seq_len: 256
-  eval_seq_len: 256
+  eval_seq_len: 1000
   channels: 1
   cnn_depth: 32
   encoder_kernels: [4, 4, 4, 4]
@@ -53,6 +53,7 @@ defaults:
   # TRAINING
   lr: 0.0003
   batch_size: 128
+  eval_batch_size: 24
   num_epochs: 300
   kl_grad_post_perc: null
   free_nats: null
@@ -79,11 +80,13 @@ defaults:
 
 
 
-jax-001:
+jax-002-rev2:
   # MODEL
-  device: 'cuda:0'
-  exp_name: 'jax-001'
+  device: 'cuda:1'
+  exp_name: 'jax-002-rev2'
+  batch_size: 64  
   levels: 3
   dataset: jax_mmnist
   train_num_mmnist_seq: 20000
-  val_num_mmnist_seq: 100
+  val_num_mmnist_seq: 1000
+  num_mnist_patch: 20
