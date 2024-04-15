@@ -38,7 +38,7 @@ def load_dataset(cfg, **kwargs):
             device=device,
         )
         test_data = JaxMMNIST(
-            train=True, 
+            train=False, 
             seq_len=cfg.eval_seq_len, 
             batch_size=cfg.eval_batch_size, 
             num_source_mnist_images=cfg.num_mnist_patch, 

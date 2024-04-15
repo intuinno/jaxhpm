@@ -90,3 +90,15 @@ jax-002-rev4:
   train_num_mmnist_seq: 20000
   val_num_mmnist_seq: 1000
   num_mnist_patch: 20
+
+
+jax-002-rev5:
+  # MODEL
+  device: 'cuda:0'
+  exp_name: 'jax-002-rev5'
+  batch_size: 64  
+  levels: 3
+  dataset: jax_mmnist
+  train_num_mmnist_seq: 20000
+  val_num_mmnist_seq: 1000
+  num_mnist_patch: 10000
