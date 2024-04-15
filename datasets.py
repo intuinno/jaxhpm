@@ -475,14 +475,15 @@ def JaxMMNIST(
     )
 
     seed = 38
-    new_key = jax.random.key(seed)
-    batch_key = jax.random.split(new_key, num=batch_size)
+    next_key = jax.random.key(seed)
 
     batch_build_seq = jax.jit(
         jax.vmap(jaxLoader.build_seq),
     )
 
     while True:
+        next_key, current_key = jax.random.split(next_key)
+        batch_key = jax.random.split(current_key, num=batch_size)
         batch_ys = batch_build_seq(batch_key)
         reshaped_ys = einops.rearrange(batch_ys, "b t w h -> b t w h 1")
         torch_ys = torch.from_dlpack(reshaped_ys)

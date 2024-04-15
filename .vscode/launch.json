@@ -41,17 +41,18 @@
             "args": [
                 //"--model", "/home/intuinno/codegit/cwvae-torch/logs/mmnist/exp044_20230831_150212/latest_checkpoint.pt",
                 // "--model", "/home/intuinno/codegit/jaxhpm/logs/jax_mmnist/jax-001_20240320_175512/latest_checkpoint.pt",
-                "--model", "/home/intuinno/codegit/jaxhpm/logs/jax_mmnist/jax-001_20240320_175512/state_200.pt",
+                "--model", "/home/intuinno/codegit/jaxhpm/logs/jax_mmnist/jax-002-rev3_20240412_121934/latest_checkpoint.pt", 
                 "--top-ctx", "4",  
-                "--batch-size", "8", 
+                "--batch-size", "4", 
                 "--num-examples", "100",
-                "--num-samples", "3",
-                "--device", "cuda:1",
+                "--num-samples", "2",
+                "--device", "cuda:0",
                 "--exp-name", "debug03",
                 // "--no-save-grid",
             ],
             "env": {
                 "XLA_PYTHON_CLIENT_ALLOCATOR": "platform",
+                "JAX_DISABLE_JIT": "True",
             },
         },
     ]

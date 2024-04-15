@@ -123,8 +123,8 @@ if __name__ == "__main__":
     num_epochs = args.num_examples // configs.eval_batch_size
     for i_ex in tqdm(range(num_epochs)):
 
-        # x = next(val_dataset)
-        x = next(train_dataset)
+        x = next(val_dataset)
+        # x = next(train_dataset)
         gts = torch.tile(
             x,
             [args.num_samples, 1, 1, 1, 1],
@@ -171,6 +171,7 @@ if __name__ == "__main__":
             np.savez(path + "best_psnr_sample.npz", preds[order_psnr[-1]])
             np.savez(path + "random_sample_2.npz", preds[1])
         if not args.no_save_grid:
+            tools.save_as_grid(gts[:,0,:,:,:], path, "first_gt.png")
             tools.save_as_grid(preds[0], path, "random_sample_1.png")
             if args.num_samples > 1:
                 tools.save_as_grid(preds[order_ssim[-1]], path, "best_ssim_sample.png")

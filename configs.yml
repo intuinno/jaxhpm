@@ -80,11 +80,11 @@ defaults:
 
 
 
-jax-002-rev2:
+jax-002-rev4:
   # MODEL
-  device: 'cuda:1'
-  exp_name: 'jax-002-rev2'
-  batch_size: 64  
+  device: 'cuda:0'
+  exp_name: 'jax-002-rev4'
+  batch_size: 128  
   levels: 3
   dataset: jax_mmnist
   train_num_mmnist_seq: 20000
