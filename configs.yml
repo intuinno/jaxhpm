@@ -48,6 +48,9 @@ defaults:
   decoder_kernels: [5, 5, 6, 6]
   decoder_thin: True
   datadir: data
+  train_num_mmnist_seq: 20000
+  val_num_mmnist_seq: 1000
+  num_mnist_patch: 10000
 
 
   # TRAINING
@@ -78,27 +81,18 @@ defaults:
   train_gif_every: 20
 
 
-
-
-jax-002-rev4:
+exp-051-rev7-L2:
   # MODEL
-  device: 'cuda:0'
-  exp_name: 'jax-002-rev4'
-  batch_size: 128  
-  levels: 3
+  exp_name: 'exp-051-rev7-L2'
+  batch_size: 64  
+  levels: 2
   dataset: jax_mmnist
-  train_num_mmnist_seq: 20000
-  val_num_mmnist_seq: 1000
-  num_mnist_patch: 20
+  num_epochs: 1000 
 
-
-jax-002-rev5:
+exp-051-rev7-L3:
   # MODEL
-  device: 'cuda:0'
-  exp_name: 'jax-002-rev5'
+  exp_name: 'exp-051-rev7-L3'
   batch_size: 64  
   levels: 3
   dataset: jax_mmnist
-  train_num_mmnist_seq: 20000
-  val_num_mmnist_seq: 1000
-  num_mnist_patch: 10000
+  num_epochs: 1000 
