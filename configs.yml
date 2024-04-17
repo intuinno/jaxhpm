@@ -95,4 +95,4 @@ exp-051-rev7-L3:
   batch_size: 64  
   levels: 3
   dataset: jax_mmnist
-  num_epochs: 1000 
+  num_epochs: 700 
