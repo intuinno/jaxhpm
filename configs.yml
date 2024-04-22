@@ -81,18 +81,18 @@ defaults:
   train_gif_every: 20
 
 
-exp-051-rev7-L2:
+exp-051-rev8-L2:
   # MODEL
-  exp_name: 'exp-051-rev7-L2'
+  exp_name: 'exp-051-rev8-L2'
   batch_size: 64  
   levels: 2
   dataset: jax_mmnist
   num_epochs: 1000 
 
-exp-051-rev7-L3:
+exp-051-rev8-L3:
   # MODEL
-  exp_name: 'exp-051-rev7-L3'
+  exp_name: 'exp-051-rev8-L3'
   batch_size: 64  
   levels: 3
   dataset: jax_mmnist
-  num_epochs: 700 
+  num_epochs: 1000 
