@@ -54,17 +54,12 @@ defaults:
 
 
   # TRAINING
-  lr: 0.0003
   batch_size: 128
   eval_batch_size: 24
   num_epochs: 300
   kl_grad_post_perc: null
   free_nats: null
-  beta: null
-  clip_grad_norm_by: 100
-  eps: 1e-4
-  weight_decay: 0.0
-  optimizer: "adam"
+
   debug: False 
 
 
@@ -81,18 +76,26 @@ defaults:
   train_gif_every: 20
 
 
-exp-051-rev7-L2:
-  # MODEL
-  exp_name: 'exp-051-rev7-L2'
-  batch_size: 64  
-  levels: 2
-  dataset: jax_mmnist
-  num_epochs: 1000 
 
-exp-051-rev7-L3:
+  # World Model
+  dyn:
+    typ: rssm
+    rssm: {deter: 8192, hidden: 1024, stoch: 32, classes: 64, act: silu, norm: rms, unimix: 0.01, outscale: 1.0, winit: normal, imglayers: 2, obslayers: 1, dynlayers: 1, absolute: False, cell: blockgru, blocks: 8, block_fans: False, block_norm: False}
+  enc:
+    simple: {depth: 64, mults: [1, 2, 3, 4, 4], layers: 3, units: 1024, act: silu, norm: rms, winit: normal, symlog: True, debug_outer: True, kernel: 5, minres: 4}
+  dec:
+    simple: {inputs: [deter, stoch], vecdist: symlog_mse, depth: 64, mults: [1, 2, 3, 4, 4], layers: 3, units: 1024, act: silu, norm: rms, outscale: 1.0, winit: normal, debug_outer: True, kernel: 5, minres: 4, block_space: 8, block_fans: False, block_norm: False, hidden_stoch: True, space_hidden: 0}
+  model_opt: {scaler: adam, lr: 1e-4, eps: 1e-8, globclip: 1000.0, wd: 0.0, warmup: 0}
+  winit_scale: 0.0
+  loss_scales: {dec_cnn: 1.0, dec_mlp: 1.0, dyn: 1.0, rep: 0.1}
+  
+
+
+
+jax-003:
   # MODEL
-  exp_name: 'exp-051-rev7-L3'
+  exp_name: 'jax-003'
   batch_size: 64  
-  levels: 3
+  levels: 1
   dataset: jax_mmnist
   num_epochs: 1000 

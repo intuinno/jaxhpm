@@ -1,12 +1,9 @@
 import jax.numpy as jnp
 import jax
 import numpy as np
-from jax import random, jit
+from jax import random
 import mnist
-from functools import partial
-import gymnasium as gym
 import os
-import imageio
 import matplotlib.image
 import jax.profiler
 

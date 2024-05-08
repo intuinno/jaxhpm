@@ -13,6 +13,25 @@
             "justMyCode": true
         },
         {
+            "name": "jaxhpm_1level",
+            "type": "python", 
+            "request": "launch", 
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true, 
+            "args": [
+                "--configs", "defaults",  "jax-003",
+                "--debug", "True",
+            ],
+            "env": {
+                // "XLA_PYTHON_CLIENT_MEM_FRACTION": ".30",
+                // "XLA_PYTHON_CLIENT_ALLOCATOR": "platform",
+            }
+            // "environment": [
+            //     {"name": "XLA_PYTHON_CLIENT_MEM_FRACTION", "value": ".10"}
+            // ],
+        },
+        {
             "name": "jax_mmnist",
             "type": "python", 
             "request": "launch", 

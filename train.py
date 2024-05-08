@@ -1,6 +1,6 @@
 import numpy as np
 import argparse
-import ruamel.yaml as yaml
+from ruamel.yaml import YAML
 import pathlib
 import sys
 from tqdm import tqdm
@@ -10,25 +10,14 @@ from tqdm import tqdm
 # from loggers.checkpoint import Checkpoint
 from data_loader import *
 import tools
-from l2hwm import L2HWM
+
+# from l2hwm import L2HWM
+from jaxhpm import JaxHPM
 from datetime import datetime
 import pytz
-from prettytable import PrettyTable
 import jax
-
-
-def count_parameters(model):
-    table = PrettyTable(["Modules", "Parameters"])
-    total_params = 0
-    for name, parameter in model.named_parameters():
-        if not parameter.requires_grad:
-            continue
-        params = parameter.numel()
-        table.add_row([name, params])
-        total_params += params
-    print(table)
-    print(f"Total Trainable Params: {total_params}")
-    return total_params
+import ninjax as nj
+import embodied
 
 
 if __name__ == "__main__":
@@ -37,7 +26,8 @@ if __name__ == "__main__":
     parser.add_argument("--load_model", type=str)
     args, remaining = parser.parse_known_args()
     rootdir = pathlib.Path(sys.argv[0]).parent
-    configs = yaml.safe_load((rootdir / "configs.yml").read_text())
+    yaml = YAML(typ="safe", pure=True)
+    configs = yaml.load((rootdir / "configs.yml").read_text())
 
     defaults = {}
     for name in args.configs:
@@ -62,14 +52,23 @@ if __name__ == "__main__":
     exp_logdir.mkdir(parents=True, exist_ok=True)
 
     # Dumping config.
+    yaml.default_flow_style = False
     with open(exp_logdir / "config.yml", "w") as f:
-        yaml.dump(configs, f, default_flow_style=False)
+        yaml.dump(vars(configs), f)
+
+    # Change to Config
+    configs = embodied.core.Config(vars(configs))
 
     # Load dataset.
     train_dataloader, val_dataloader = load_dataset(configs)
 
     # Build model
-    model = L2HWM(configs).to(configs.device)
+    model = JaxHPM(configs, name="jaxhpm")
+
+    pure_init = nj.pure(lambda x: model.initial(len(x)))
+    pure_train = nj.pure(model.train)
+    jit_init = nj.jit(pure_init)
+    jit_train = nj.jit(pure_train)
 
     print(f"========== Using {configs.device} device ===================")
 
@@ -87,33 +86,38 @@ if __name__ == "__main__":
     num_val_enumerate = configs.val_num_mmnist_seq // configs.eval_batch_size
     num_train_enumerate = configs.train_num_mmnist_seq // configs.batch_size
 
+    x = next(train_dataloader)
+    state = {}
+    state = nj.init(model.local_train)(state, x, seed=42)
+    local_train = nj.pure(model.local_train)
+    local_train = jax.jit(local_train)
+
     for epoch in range(configs.num_epochs):
         # Write evaluation summary
-        print(f"======== Epoch {epoch} / {configs.num_epochs} ==========")
-        now = datetime.now(tz)
-        current_time = now.strftime("%H:%M:%S")
-        print("Current Time =", current_time)
+        # print(f"======== Epoch {epoch} / {configs.num_epochs} ==========")
+        # now = datetime.now(tz)
+        # current_time = now.strftime("%H:%M:%S")
+        # print("Current Time =", current_time)
 
-        logger.step = epoch
+        # logger.step = epoch
 
-        if epoch % configs.eval_every == 0:
-            print(f"Evaluating ... ")
-            recon_loss_list = []
-            for i, _ in enumerate(tqdm(range(num_val_enumerate))):
-                x = next(val_dataloader)
-                openl, recon_loss = model.video_pred(x.to(configs.device))
-                if i == 0:
-                    logger.video("eval_openl", openl)
-                recon_loss_list.append(recon_loss)
-            recon_loss_mean = np.mean(recon_loss_list)
-            logger.scalar("eval_video_nll", recon_loss_mean)
+        # if epoch % configs.eval_every == 0:
+        #     print(f"Evaluating ... ")
+        #     recon_loss_list = []
+        #     for i, _ in enumerate(tqdm(range(num_val_enumerate))):
+        #         x = next(val_dataloader)
+        #         openl, recon_loss = model.video_pred(x.to(configs.device))
+        #         if i == 0:
+        #             logger.video("eval_openl", openl)
+        #         recon_loss_list.append(recon_loss)
+        #     recon_loss_mean = np.mean(recon_loss_list)
+        #     logger.scalar("eval_video_nll", recon_loss_mean)
 
         # with jax.profiler.trace("./logs"):
         print(f"Training ...")
         for i, _ in enumerate(tqdm(range(num_train_enumerate))):
             x = next(train_dataloader)
-            x = x.to(configs.device)
-            met = model.local_train(x)
+            state, met = local_train(state, x)
             for name, values in met.items():
                 if not name in metrics.keys():
                     metrics[name] = [values]

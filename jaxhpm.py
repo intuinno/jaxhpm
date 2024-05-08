@@ -1,10 +1,10 @@
-import networks
-import tools
-import numpy as np
-import einops
-import math
+import nets
+import jaxutils
 import jax
 import jax.numpy as jnp
+from functools import partial as bind
+import embodied
+import numpy as np
 
 tree_map = jax.tree_util.tree_map
 sg = lambda x: tree_map(jax.lax.stop_gradient, x)
@@ -21,38 +21,54 @@ class CheckTypesFilter(logging.Filter):
 
 logger.addFilter(CheckTypesFilter())
 
-from . import ninjax as nj
-from . import nets
-from . import jaxutils
+import ninjax as nj
+import nets
+import jaxutils
 
 
-class JAXHPM(nj.Module):
+class JaxHPM(nj.Module):
 
-    def __init__(self, obs_space, act_space, config):
-        self.obs_space = obs_space
-        self.act_space = act_space["action"]
+    def __init__(self, config):
+
         self.config = config
-        shapes = {k: tuple(v.shape) for k, v in obs_space.items()}
-        shapes = {k: v for k, v in shapes.items() if not k.startswith("log_")}
-        self.encoder = nets.MultiEncoder(shapes, **config.encoder, name="enc")
-        self.rssm = nets.RSSM(**config.rssm, name="rssm")
-        self.heads = {
-            "decoder": nets.MultiDecoder(shapes, **config.decoder, name="dec")
+
+        enc_space = {
+            "image": embodied.core.Space(
+                dtype=np.dtype("uint8"), shape=(64, 64, 1), low=3, high=255
+            )
         }
-        self.opt = jaxutils.Optimizer(name="model_opt", **config.model_opt)
+        dec_space = {
+            "image": embodied.core.Space(
+                dtype=np.dtype("uint8"), shape=(64, 64, 1), low=3, high=255
+            )
+        }
+        embodied.print("Encoder:", {k: v.shape for k, v in enc_space.items()})
+        embodied.print("Decoder:", {k: v.shape for k, v in dec_space.items()})
+        # nets.Initializer.VARIANCE_FACTOR = self.config.init_scale
+        nets.Initializer.FORCE_STDDEV = self.config.winit_scale
+
+        # World Model
+        opt_kw = dict(config.model_opt)
+        lr = opt_kw.pop("lr")
+        self.enc = nets.SimpleEncoder(enc_space, name="enc", **config.enc.simple)
+        self.dec = nets.SimpleDecoder(dec_space, name="dec", **config.dec.simple)
+        self.dyn = nets.RSSM(name="dyn", **config.dyn.rssm)
+        self.opt = jaxutils.Optimizer(lr, name="model_opt", **opt_kw)
+        self.modules = [self.enc, self.dec, self.dyn]
         scales = self.config.loss_scales.copy()
-        image, vector = scales.pop("image"), scales.pop("vector")
-        scales.update({k: image for k in self.heads["decoder"].cnn_shapes})
-        scales.update({k: vector for k in self.heads["decoder"].mlp_shapes})
+        cnn = scales.pop("dec_cnn")
+        mlp = scales.pop("dec_mlp")
+        scales.update({k: cnn for k in self.dec.imgkeys})
+        scales.update({k: mlp for k in self.dec.veckeys})
         self.scales = scales
 
     def initial(self, batch_size):
-        prev_latent = self.rssm.initial(batch_size)
+        prev_latent = self.dyn.initial(batch_size)
         prev_action = jnp.zeros((batch_size, *self.act_space.shape))
         return prev_latent, prev_action
 
     def train(self, data, state):
-        modules = [self.encoder, self.rssm, *self.heads.values()]
+        modules = [self.encoder, self.dyn, *self.heads.values()]
         mets, (state, outs, metrics) = self.opt(
             modules, self.loss, data, state, has_aux=True
         )
