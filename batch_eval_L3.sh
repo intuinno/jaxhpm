@@ -1,4 +1,11 @@
-CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev7-L3_20240417_140910/state_300.pt   --exp-name exp-051-rev7-L3-300  --batch-size 8 --num-examples 1000  --num-samples 3 --device cuda:0
-CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev7-L3_20240417_140910/state_200.pt   --exp-name exp-051-rev7-L3-200  --batch-size 8 --num-examples 1000  --num-samples 3 --device cuda:0
-CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev7-L3_20240417_140910/state_100.pt   --exp-name exp-051-rev7-L3-100  --batch-size 8 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_100.pt   --exp-name exp-051-rev9-L3-100  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_200.pt   --exp-name exp-051-rev9-L3-200  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_300.pt   --exp-name exp-051-rev9-L3-300  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_400.pt   --exp-name exp-051-rev9-L3-400  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_500.pt   --exp-name exp-051-rev9-L3-500  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_600.pt   --exp-name exp-051-rev9-L3-600  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_700.pt   --exp-name exp-051-rev9-L3-700  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_800.pt   --exp-name exp-051-rev9-L3-800  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/state_900.pt   --exp-name exp-051-rev9-L3-900  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
+CUDA_VISIBLE_DEVICES=1 python eval.py --top-ctx 8 --model logs/jax_mmnist/exp-051-rev9-L3_20240430_163545/latest_checkpoint.pt --exp-name exp-051-rev8-L3-final  --batch-size 5 --num-examples 1000  --num-samples 3 --device cuda:0
 

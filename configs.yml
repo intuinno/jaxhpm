@@ -96,3 +96,19 @@ exp-051-rev8-L3:
   levels: 3
   dataset: jax_mmnist
   num_epochs: 1000 
+
+exp-051-rev9-L2:
+  # MODEL
+  exp_name: 'exp-051-rev9-L2'
+  batch_size: 64  
+  levels: 2
+  dataset: jax_mmnist
+  num_epochs: 1000 
+
+exp-051-rev9-L3:
+  # MODEL
+  exp_name: 'exp-051-rev9-L3'
+  batch_size: 64  
+  levels: 3
+  dataset: jax_mmnist
+  num_epochs: 1000 
