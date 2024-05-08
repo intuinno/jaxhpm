@@ -6,12 +6,12 @@ defaults:
   tmp_abs_factor: 4
   model_dir_prefix: null
   enc_dense_layers: 3
-  enc_dense_hidden_size: 1000
+  enc_dense_hidden_size: 256
   cell_type: RSSMCell
-  dyn_stoch_size: 32
-  dyn_deter_size: 512
-  dyn_hidden_size: 512
-  enc_emb_size: 200
+  dyn_stoch_size: 8
+  dyn_deter_size: 128
+  dyn_hidden_size: 128
+  enc_emb_size: 64
   dyn_min_stddev: 0.0001
   dyn_mean_only: False
   dyn_reset_state: False
@@ -39,8 +39,8 @@ defaults:
   seed: 42
 
   # DATASET
-  dataset: mmnist
-  seq_len: 256
+  dataset: jax_mmnist
+  seq_len: 512
   eval_seq_len: 1000
   channels: 1
   cnn_depth: 32
@@ -57,7 +57,7 @@ defaults:
   lr: 0.0003
   batch_size: 128
   eval_batch_size: 24
-  num_epochs: 300
+  num_epochs: 1000
   kl_grad_post_perc: null
   free_nats: null
   beta: null
@@ -80,35 +80,14 @@ defaults:
   eval_every: 20
   train_gif_every: 20
 
-
-exp-051-rev8-L2:
+exp-051-rev10-L2:
   # MODEL
-  exp_name: 'exp-051-rev8-L2'
-  batch_size: 64  
+  exp_name: 'exp-051-rev10-L2'
+  batch_size: 128  
   levels: 2
-  dataset: jax_mmnist
-  num_epochs: 1000 
 
-exp-051-rev8-L3:
+exp-051-rev10-L3:
   # MODEL
-  exp_name: 'exp-051-rev8-L3'
-  batch_size: 64  
+  exp_name: 'exp-051-rev10-L3'
+  batch_size: 128  
   levels: 3
-  dataset: jax_mmnist
-  num_epochs: 1000 
-
-exp-051-rev9-L2:
-  # MODEL
-  exp_name: 'exp-051-rev9-L2'
-  batch_size: 64  
-  levels: 2
-  dataset: jax_mmnist
-  num_epochs: 1000 
-
-exp-051-rev9-L3:
-  # MODEL
-  exp_name: 'exp-051-rev9-L3'
-  batch_size: 64  
-  levels: 3
-  dataset: jax_mmnist
-  num_epochs: 1000 
