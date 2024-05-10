@@ -471,7 +471,7 @@ def JaxMMNIST(
         mnist_images = mnist['test']['image']
 
     np_images = mnist_images[:num_source_mnist_images]
-    np_images = einops.rearrange(np_images, "w h 1 -> w h")
+    np_images = einops.rearrange(np_images, "b w h 1 -> b w h")
     jax_images = jax.device_put(np_images, jax.devices()[device])
 
     jaxLoader = JaxMNISTLoader(
