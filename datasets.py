@@ -18,7 +18,6 @@ import codecs
 from zipfile import ZipFile
 import urllib
 import einops
-import mnist
 from jax_loader import JaxMNISTLoader
 import jax
 import jax.numpy as jnp
@@ -463,6 +462,9 @@ def JaxMMNIST(
     device=0,
 ):
 
+    mnist = tfds.as_numpy(tfds.load('mnist', 
+                                    batch_size=-1))
+    
     if train:
         mnist_images = mnist['train']['image']
     else:
