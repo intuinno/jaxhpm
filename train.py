@@ -37,7 +37,8 @@ if __name__ == "__main__":
     parser.add_argument("--load_model", type=str)
     args, remaining = parser.parse_known_args()
     rootdir = pathlib.Path(sys.argv[0]).parent
-    configs = yaml.safe_load((rootdir / "configs.yml").read_text())
+    yaml = YAML(typ="safe", pure=True)
+    configs = yaml.load((rootdir / "configs.yml").read_text())
 
     defaults = {}
     for name in args.configs:
@@ -62,8 +63,11 @@ if __name__ == "__main__":
     exp_logdir.mkdir(parents=True, exist_ok=True)
 
     # Dumping config.
+    yaml.default_flow_style = False
     with open(exp_logdir / "config.yml", "w") as f:
-        yaml.dump(configs, f, default_flow_style=False)
+        yaml.dump(vars(configs), f)
+
+  
 
     # Load dataset.
     train_dataloader, val_dataloader = load_dataset(configs)
