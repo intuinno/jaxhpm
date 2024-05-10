@@ -1,6 +1,6 @@
 import numpy as np
 import argparse
-import ruamel.yaml as yaml
+from ruamel.yaml import YAML
 import pathlib
 import sys
 from tqdm import tqdm
