@@ -83,11 +83,11 @@ defaults:
 exp-051-rev10-L2:
   # MODEL
   exp_name: 'exp-051-rev10-L2'
-  batch_size: 128  
+  batch_size: 64  
   levels: 2
 
 exp-051-rev10-L3:
   # MODEL
   exp_name: 'exp-051-rev10-L3'
-  batch_size: 128  
+  batch_size: 64  
   levels: 3

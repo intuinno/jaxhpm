@@ -20,8 +20,8 @@
             "console": "integratedTerminal",
             "justMyCode": true, 
             "args": [
-                "--configs", "defaults",  "jax-002",
-                "--debug", "True",
+                "--configs", "defaults",  "exp-051-rev10-L2",
+                // "--debug", "True",
             ],
             "env": {
                 "XLA_PYTHON_CLIENT_MEM_FRACTION": ".30",
