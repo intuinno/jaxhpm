@@ -86,12 +86,13 @@ exp-051-rev10-L2-Debug:
   batch_size: 64  
   levels: 2
   train_git_every: 1
-  eval_every:1
+  eval_every: 1
   backup_model_every: 1
   
 
-exp-051-rev10-L3:
+exp-052-L3:
   # MODEL
-  exp_name: 'exp-051-rev10-L3'
+  exp_name: 'debug-exp-052-L3'
   batch_size: 64  
   levels: 3
+  device: 'cpu'

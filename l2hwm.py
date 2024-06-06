@@ -6,12 +6,13 @@ import numpy as np
 import einops
 import torch.nn.functional as F
 from torch import distributions as torchd
-from torchview import draw_graph
-import graphviz
+
+# from torchview import draw_graph
+# import graphviz
 import math
 
 # graphviz.set_jupyter_format('png')
-from torchviz import make_dot, make_dot_from_trace
+# from torchviz import make_dot, make_dot_from_trace
 
 to_np = lambda x: x.detach().cpu().numpy()
 
