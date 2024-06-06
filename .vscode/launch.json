@@ -20,7 +20,8 @@
             "console": "integratedTerminal",
             "justMyCode": true, 
             "args": [
-                "--configs", "defaults",  "exp-052-L3",
+                "--configs", "defaults",  "exp-051-rev12-L2",
+                // "--device", "cpu",
                 // "--debug", "True",
             ],
             "env": {
