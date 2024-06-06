@@ -1,4 +1,5 @@
 temp/
+out.ps
 logs/
 *.png
 *.prof
